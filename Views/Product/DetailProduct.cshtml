@@ -1,0 +1,245 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using Project_SE.Models;
+@model Product;
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Askbootstrap" />
+    <meta name="author" content="Askbootstrap" />
+    <title>Online Shopping</title>
+
+    <!-- Feather Icon-->
+    <link href="~/X/skin/css/feather.css" rel="stylesheet" type="text/css">
+    <!-- Fontawesome Icon-->
+    <link href="~/X/skin/bootstrap/fontawesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Bootstrap Css -->
+    <link href="~/X/skin/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Css -->
+    <link href="~/X/skin/css/listUser.css" rel="stylesheet" />
+    <link href="~/X/skin/bootstrap/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        img {
+            display: block;
+            max-width: 100px;
+            max-height: 100px;
+            width: auto;
+            height: auto;
+        }
+    </style>
+</head>
+
+
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-light bg-white shadow-sm">
+        <a class="navbar-brand" href="ListUsers"><img alt="logo" src="image/image0.jpg" width="100px"></a>
+        <!-- Navbar Search class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" -->
+
+        <div class="row" style="margin-left:60px">
+            <form id="f" asp-controller="Product" asp-action="searchProductSelect">
+                <select name="chose1" style="margin-right:15px;" onchange="change();">
+                    @if (ViewBag.chose1 != 0)
+                    {
+                        <option value="0">All</option>
+                    }
+                    else
+                    {
+                        <option selected value="0">All</option>
+                    }
+                    @if (ViewBag.chose1 != 1)
+                    {
+                        <option value="1">Giảm giá</option>
+                    }
+                    else
+                    {
+                        <option selected value="1">Giảm giá</option>
+                    }
+                    @if (ViewBag.chose1 != 2)
+                    {
+                        <option value="2">Không giảm giá</option>
+                    }
+                    else
+                    {
+                        <option selected value="2">Không giảm giá</option>
+                    }
+
+
+
+                </select>
+                <select name="chose2" style="margin-right:15px;" onchange="change();">
+                    @if (ViewBag.chose2 != 0)
+                    {
+                        <option value="0">Người tạo</option>
+                    }
+                    else
+                    {
+                        <option selected value="0">Người tạo</option>
+                    }
+                    @if (ViewBag.chose2 != 1)
+                    {
+                        <option value="1">Sản Phẩm</option>
+                    }
+                    else
+                    {
+                        <option selected value="2">Sản Phẩm</option>
+                    }
+                    @if (ViewBag.chose2 != 2)
+                    {
+                        <option value="2">Code Sản Phẩm</option>
+                    }
+                    else
+                    {
+                        <option selected value="2">Code Sản Phẩm</option>
+                    }
+
+
+                </select>
+                <input type="text" name="nameSe" value="@ViewBag.sea" onchange="change();" />
+
+            </form>
+
+        </div>
+        <!-- Navbar-->
+        <ul class="navbar-nav ml-auto ml-md-0">
+            <li class="nav-item dropdown no-arrow d-sm-none">
+                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="feather-search mr-2"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Core</div>
+                        <a class="nav-link" asp-action="Index" asp-controller="Home">
+                            <div class="sb-nav-link-icon"><i class="feather-list"></i></div>
+                            Danh Sách Người Dùng
+                        </a>
+                        <a class="nav-link" asp-action="DSNguoiBan" asp-controller="Home">
+                            <div class="sb-nav-link-icon"><i class="feather-list"></i></div>
+                            Danh Sách Người Bán
+                        </a>
+
+                        <a class="nav-link" asp-action="ProductDiscount" asp-controller="Product">
+                            <div class="sb-nav-link-icon"><i class="feather-list"></i></div>
+                            Danh Sách Sản Phẩm
+                        </a>
+                         <a class="nav-link" asp-action="ProductDiscountIsDelete" asp-controller="Product">
+                            <div class="sb-nav-link-icon"><i class="feather-list"></i></div>
+                            Danh sách đã xóa
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <div class="form-content" style="width: 80%;height: auto; margin-left: 10%; padding-top: 0;padding-bottom: 0; margin-top:50px">
+                <form asp-action="Update" asp-controller="Product" >
+                <div class="mb-3">
+                    <h2 style="text-align:center; color:forestgreen;font-weight:bolder">Product</h2>
+                </div>
+                <div class="mb-3">
+                     
+                    <label for="exampleFormControlInput1" class="form-label">Code</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" asp-for="Code" name="codeer"  >
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput2" class="form-label">Tên</label>
+                    <input type="text" class="form-control"id="exampleFormControlInput2" asp-for="Name"   title="Name sai dinh dang" 
+                      required="" readonly="">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput3" class="form-label">Số Sản Phẩm Đã Bán</label>
+                    <input type="number" class="form-control"id="exampleFormControlInput3" asp-for="QuantitySale" value="@Model.QuantitySale"  title="Name sai dinh dang" onchange="changeQua()"
+                     min="0"   required=""  >
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput4" class="form-label">Tổng số sản phầm</label>
+                    <input type="number" class="form-control" id="exampleFormControlInput4"   asp-for="Quantity" value="@Model.Quantity" title="Name sai dinh dang" onchange="changeQua()"
+                    min="0"  required="" >
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput5" class="form-label">Giá</label>
+                    <input type="number" class="form-control" id="exampleFormControlInput5" asp-for="Price" title="Name sai dinh dang"  required="">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput6" class="form-label">Thông tin SP</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput6" asp-for="Description"     required="">
+                </div>
+                <div class="mb-3">
+                    <table>
+                        <tr>
+                            <td><label for="exampleFormControlInput7" class="form-label">Ảnh</label></td>
+                            <td><img class="card-img-top" id="imgCha" src="@Model.Img" alt="" ></td>
+                        </tr>
+                     </table>
+                      <input required="" type="text" class="form-control" id="exampleFormControlInput7" asp-for="Img"   onchange="chage();"  >
+                    
+                   
+                </div>
+                <div class="mb-3">
+                    <table>
+                        <tr>
+                            <td><label for="exampleFormControlInput81" class="form-label">Số lượng hàng giảm giá</label></td>
+                            <td><input type="number" min="0"  max="100" class="form-control" id="exampleFormControlInput81" asp-for="Discount.Quantity" value="@Model.Discount.Quantity"   ></td>
+                        </tr>
+                        <tr>
+                            <td><label for="exampleFormControlInput9" class="form-label">Phần trăm giảm giá</label</td>
+                            <td><input type="number" min="0"  class="form-control" id="exampleFormControlInput9" asp-for="Discount.PercentP"  title="Name sai dinh dang" ></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mb-3">
+                    <h6 style="text-align:center; color:forestgreen;font-weight:bolder">
+                        <input type="button" value="Delete" onclick="onDelete(@ViewBag.PidD);" asp-route-id="@ViewBag.PidD" />
+                        <input id="updatePro" type="button" value="Update" onclick="onUpdate();" asp-route-id="@ViewBag.PidD" /> 
+                        <input id="savePro" type="submit" value="Save" style="display:none" />
+                    </h6>
+                </div>
+                </form>
+            </div>
+           
+        </div>
+    </div>
+
+</body>
+<script>
+    function changeQua(){
+        var min = document.getElementById("exampleFormControlInput3").value;
+        var max = document.getElementById("exampleFormControlInput4").value;
+        document.getElementById("exampleFormControlInput3").setAttribute("max",max);
+        document.getElementById("exampleFormControlInput4").setAttribute("min",min);
+        document.getElementById("exampleFormControlInput81").setAttribute("max",max);
+    }
+    function chage(){
+        document.getElementById("imgCha").src=document.getElementById("exampleFormControlInput7").value;
+    }
+    function onDelete(s){
+        if(confirm("Ban co muon xoa khong?")) {
+            window.location.replace('/Product/deleteProduct?pId='+s);
+          };
+                   
+    }
+    function onUpdate(){
+        document.getElementById("savePro").style.display="inline";
+        document.getElementById("updatePro").style.display="none";
+        for(var i= 2;i<10;i++){
+            document.getElementById("exampleFormControlInput"+i).removeAttribute('readonly');
+        }
+        
+    }
+    function change() {
+        document.getElementById("f").submit();
+    }
+</script>
+</html>

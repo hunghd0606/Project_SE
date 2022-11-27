@@ -1,0 +1,204 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using Project_SE.Models;
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Askbootstrap" />
+    <meta name="author" content="Askbootstrap" />
+    <title>Online Shopping </title>
+
+    <!-- Feather Icon-->
+    <link href="~/X/skin/css/feather.css" rel="stylesheet" type="text/css">
+    <!-- Fontawesome Icon-->
+    <link href="~/X/skin/bootstrap/fontawesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Bootstrap Css -->
+    <link href="~/X/skin/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Css -->
+    <link href="~/X/skin/css/listUser.css" rel="stylesheet" />
+    <link href="~/X/skin/bootstrap/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <style>
+        *{
+            box-sizing:border-box;
+        }
+        img {
+            display: block;
+            max-width: 400px;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+        }
+    </style>
+</head>
+
+
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-light bg-white shadow-sm">
+        <a class="navbar-brand" href="ListUsers"><img alt="logo" src="image/image0.jpg" width="100px"></a>
+        <!-- Navbar Search class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0" -->
+        
+        <div class="row" style="margin-left:60px">
+            <form  id="f" asp-controller="Product" asp-action="searchProductSelect">
+                <label for="male">Tăng dần</label>
+                @if (ViewBag.sor == 0){
+                    <input id="male" checked type="radio" name="sor" onchange="change();" value="0" style="margin-right:5px;" />
+                }else{
+                    <input id="male" type="radio" name="sor" onchange="change();" value="0" style="margin-right:5px;" />
+                }
+                <label for="female">Giảm dần</label>
+                @if (ViewBag.sor == 1){
+                    <input id="female" type="radio" name="sor" checked value="1" onchange="change();" style="margin-right:5px;" />
+                }else{
+                    <input id="female" type="radio" name="sor" value="1" onchange="change();" style="margin-right:5px;" />
+                }
+                
+                <select name="chose1" style="margin-right:15px;" onchange="change();">
+                    @if (ViewBag.chose1 !=0){
+                        <option  value="0">All</option>
+                    }else{
+                        <option selected value="0">All</option>
+                    }
+                    @if (ViewBag.chose1 != 1)
+                    {
+                        <option value="1">Giảm giá</option>
+                    }
+                    else
+                    {
+                        <option selected value="1">Giảm giá</option>
+                    }
+                    @if (ViewBag.chose1 != 2)
+                    {
+                        <option value="2">Không giảm giá</option>
+                    }
+                    else
+                    {
+                        <option selected value="2">Không giảm giá</option>
+                    }
+                   
+                    
+                    
+                </select>
+                <select name="chose2" style="margin-right:15px;" onchange="change();">
+                    @if (ViewBag.chose2 !=0){
+                        <option value="0">Người tạo</option>
+                    }else{
+                        <option selected value="0">Người tạo</option>
+                    }
+                    @if (ViewBag.chose2 != 1)
+                    {
+                        <option value="1">Sản Phẩm</option>
+                    }else{
+                        <option selected value="2">Sản Phẩm</option>
+                    }
+                    @if (ViewBag.chose2 != 2)
+                    {
+                        <option value="2">Code Sản Phẩm</option>
+                    }
+                    else
+                    {
+                        <option selected value="2">Code Sản Phẩm</option>
+                    }
+                   
+                    
+                </select>
+                <input type="text" name="nameSe" value="@ViewBag.sea" onchange="change();" />
+
+            </form>
+
+        </div>
+        <!-- Navbar-->
+        <ul class="navbar-nav ml-auto ml-md-0">
+            <li class="nav-item dropdown no-arrow d-sm-none">
+                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="feather-search mr-2"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Core</div>
+                        <a class="nav-link" asp-action="Index" asp-controller="Home">
+                            <div class="sb-nav-link-icon"><i class="feather-list"></i></div>
+                            Danh Sách Người Dùng
+                        </a>
+                        <a class="nav-link" asp-action="DSNguoiBan" asp-controller="Home">
+                            <div class="sb-nav-link-icon"><i class="feather-list"></i></div>
+                            Danh Sách Người Bán
+                        </a>
+
+                        <a class="nav-link" asp-action="ProductDiscount" asp-controller="Product">
+                            <div class="sb-nav-link-icon"><i class="feather-list"></i></div>
+                            Danh Sách Sản Phẩm
+                        </a>
+                        <a class="nav-link" asp-action="ProductDiscountIsDelete" asp-controller="Product" >
+                            <div class="sb-nav-link-icon"><i class="feather-list"></i></div>
+                            Danh sách đã xóa
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+
+            <div class="row" >
+                @foreach (Product item in @ViewBag.listProduct)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4"
+                     style="max-width: 400px;min-width: 200px; height:600px">
+                        <div class="card">
+                            <a><img class="card-img-top" src=@item.Img alt=""></a>
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                @if(item.IsExit== true){
+                                    <a href="detailProduct?pId=@item.Id">@item.Name (@item.Code)</a>
+                                }else{
+                                        <a href="#">@item.Name (@item.Code)</a>
+                                }
+                                </h4>
+                                @{
+                                    ViewBag.price = @item.Price - (@item.Price * (@item.Discount.PercentP * 0.01));
+                                }
+                                <h5><Del>@item.Price$</Del> @ViewBag.price$</h5>
+                                <p class="card-text">@item.Description</p>
+                                <p class="card-text">Create By  @item.Account.DisplayName</p>
+                                @if (item.Quantity == 0)
+                                {
+                                    <p class="card-text" style="color:red">Hết Hàng</p>
+
+                                }
+                                else
+                                {
+                                    <p class="card-text" style="color:green">Còn @item.Quantity sản phẩm</p>
+
+                                }
+                                <p class="card-text">Đã bán  @item.QuantitySale sản phẩm</p>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+</body>
+<script>
+    function change() {
+        document.getElementById("f").submit();
+    }
+</script>
+</html>

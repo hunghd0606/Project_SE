@@ -1,0 +1,162 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@using Project_SE.Models;
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Askbootstrap" />
+    <meta name="author" content="Askbootstrap" />
+    <title>Online Shopping</title>
+
+    <!-- Feather Icon-->
+    <link href="~/X/skin/css/feather.css" rel="stylesheet" type="text/css">
+    <!-- Fontawesome Icon-->
+    <link href="~/X/skin/bootstrap/fontawesome.min.css" rel="stylesheet" type="text/css">
+    <!-- Bootstrap Css -->
+    <link href="~/X/skin/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom Css -->
+    <link href="~/X/skin/css/listUser.css" rel="stylesheet" />
+    <link href="~/X/skin/bootstrap/dataTables.bootstrap4.min.css" rel="stylesheet" />
+
+</head>
+
+
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-light bg-white shadow-sm">
+        <a class="navbar-brand" href="ListUsers"><img alt="logo" src="image/image0.jpg" width="100px"></a>
+        <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#">
+            <i class="fas fa-bars"></i>
+        </button>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ml-auto ml-md-0">
+            <li class="nav-item dropdown no-arrow d-sm-none">
+                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="feather-search mr-2"></i>
+                </a>
+                <!-- Dropdown - Messages -->
+
+            </li>
+
+
+
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Core</div>
+                        <a class="nav-link" asp-action="Index" asp-controller="Home">
+                            <div class="sb-nav-link-icon"><i class="feather-list"></i></div>
+                            Danh Sách Người Dùng
+                        </a>
+                        <a class="nav-link" asp-action="DSNguoiBan" asp-controller="Home">
+                            <div class="sb-nav-link-icon"><i class="feather-list"></i></div>
+                            Danh Sách Người Bán
+                        </a>
+
+                        <a class="nav-link" asp-action="ProductDiscount" asp-controller="Product">
+                            <div class="sb-nav-link-icon"><i class="feather-list"></i></div>
+                            Danh Sách Sản Phẩm
+                        </a>
+                        <a class="nav-link" asp-action="ProductDiscountIsDelete" asp-controller="Product">
+                            <div class="sb-nav-link-icon"><i class="feather-list"></i></div>
+                            Danh sách đã xóa
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <div class="container-fluid">
+                @if (ViewBag.role==3)
+                {
+                    <h1 class="mt-4">Quản Lý Người Dùng</h1>
+                }
+                @if (ViewBag.role == 2)
+                {
+                    <h1 class="mt-4">Quản Lý Người Bán</h1>
+                }
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr class="text-uppercase">
+                                <th>ID</th>
+                                <th>Họ Và Tên</th>
+                                <th>Địa CHỉ</th>
+                                <th>Điện Thoại</th>
+                                <th>Email</th>
+                                <th>Trạng thái</th>
+                                <th colspan="3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (Account item in ViewBag.listAccount)
+                            {
+
+                                <form asp-controller="Home">
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.DisplayName</td>
+                                    <td>@item.Address</td>
+                                    <td>@item.Phone</td>
+                                    <td>@item.Email</td>
+                                        @if (@item.Status.StatusId == 2)
+                                        {
+                                        <td style="color:green">@item.Status.StatusName</td>
+                                        }
+                                        else
+                                        { 
+                                        <td style="color:red">@item.Status.StatusName</td> 
+                                        }
+                                    
+                                    <td><input type="submit" asp-route-id="@item.Id" asp-controller="Home" asp-action="NextUpdate" value="Update" /></td>
+                                    <td><input type="submit" asp-route-id="@item.Id" asp-controller="Home" asp-action="DeleteAcount" value="Delete" /></td>
+                                        @if (@item.Status.StatusId == 2)
+                                        {
+                                        <td><input type="submit" asp-route-id="@item.Id" asp-controller="Home" asp-route-lo="1" asp-action="ChangeActiveAccount" style="display:block" value="Lock" /></td>
+                                        }
+                                        else
+                                        {
+                                        <td>
+                                            <input type="submit" asp-route-id="@item.Id" asp-controller="Home" asp-route-lo="2" asp-action="ChangeActiveAccount" style="display:block" value="UnLock" />
+                                        </td>
+                                        }
+
+                                </tr>
+                                </form>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Jquery -->
+    <script src="../../../../public/js/jquery.min.js"></script>
+    <!-- Fontawesome -->
+    <script src="../../../../public/js/all.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../../../../public/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom Js -->
+    <script src="../../../../public/js/scriptsListSeller.js"></script>
+
+    <script src="../../../../public/js/dataTables.bootstrap.min.js"></script>
+    <!-- <script src="/js/datatables-demo.js"></script> -->
+
+</body>
+</html>
